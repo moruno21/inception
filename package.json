@@ -1,0 +1,14 @@
+{
+  "name": "inception",
+  "version": "0.0.0",
+  "author": "Antonio Moruno Gracia",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "start": "npm run start --workspaces --if-present"
+  }
+}
