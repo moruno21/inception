@@ -10,7 +10,14 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "format": "npm run format --workspaces --if-present",
+    "prepare": "husky install",
     "lint": "npm run lint --workspaces --if-present",
     "start": "npm run start --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.8.0",
+    "@commitlint/config-conventional": "^17.8.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.1"
   }
 }
