@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "incremental": true,
+    "outDir": "./dist",
+    "paths": {
+      "~/*": ["./*"]
+    },
+    "sourceMap": true
+  },
+  "extends": "../../tsconfig.json"
+}
