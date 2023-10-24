@@ -1,17 +1,17 @@
 {
   "name": "inception",
-  "version": "0.0.0",
   "author": "Antonio Moruno Gracia",
-  "private": true,
   "license": "MIT",
+  "private": true,
+  "version": "0.0.0",
   "workspaces": [
     "packages/**"
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "format": "npm run format --workspaces --if-present",
-    "prepare": "husky install",
     "lint": "npm run lint --workspaces --if-present",
+    "prepare": "husky install",
     "start": "npm run start --workspaces --if-present"
   },
   "devDependencies": {
