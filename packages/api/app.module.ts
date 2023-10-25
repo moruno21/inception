@@ -1,12 +1,16 @@
+import {
+  EVENTSTORE_KEYSTORE_CONNECTION,
+  EventStoreModule,
+} from '@aulasoftwarelibre/nestjs-eventstore'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ConsoleModule } from 'nestjs-console'
 
+import configuration from '~/config/configuration'
+import LoggerMiddleware from '~/middleware/logger'
 import { AppController } from '~/src/app.controller'
 import { AppService } from '~/src/app.service'
-
-import LoggerMiddleware from './middleware/logger'
 
 @Module({
   controllers: [AppController],
@@ -19,10 +23,15 @@ import LoggerMiddleware from './middleware/logger'
         '.env',
       ],
       isGlobal: true,
+      load: [configuration],
     }),
     ConsoleModule,
-    MongooseModule.forRootAsync({
-      useFactory: () => ({ uri: process.env.MONGODB_URI }),
+    EventStoreModule.forRoot({
+      connection: process.env.EVENTSTORE_URI || '',
+    }),
+    MongooseModule.forRoot(process.env.MONGODB_URI || '', {}),
+    MongooseModule.forRoot(process.env.KEYSTORE_URI || '', {
+      connectionName: EVENTSTORE_KEYSTORE_CONNECTION,
     }),
   ],
   providers: [AppService],

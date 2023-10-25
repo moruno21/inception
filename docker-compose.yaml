@@ -1,6 +1,22 @@
 version: '3'
 
 services:
+  eventstore:
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+    image: eventstore/eventstore:22.6.0-buster-slim
+    ports:
+      - '1113:1113'
+      - '2113:2113'
+    volumes:
+      - eventstore-volume-data:/var/lib/eventstore
+      - eventstore-volume-logs:/var/log/eventstore
+
   mongo:
     image: mongo:latest
     ports:
@@ -18,5 +34,7 @@ services:
     restart: unless-stopped
 
 volumes:
+  eventstore-volume-data:
+  eventstore-volume-logs:
   mongo-config:
   mongo-data:
