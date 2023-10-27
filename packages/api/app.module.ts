@@ -7,7 +7,6 @@ import { ConfigModule } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ConsoleModule } from 'nestjs-console'
 
-import configuration from '~/config/configuration'
 import LoggerMiddleware from '~/middleware/logger'
 import { AppController } from '~/src/app.controller'
 import { AppService } from '~/src/app.service'
@@ -23,7 +22,6 @@ import { AppService } from '~/src/app.service'
         '.env',
       ],
       isGlobal: true,
-      load: [configuration],
     }),
     ConsoleModule,
     EventStoreModule.forRoot({
