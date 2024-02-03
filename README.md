@@ -1,6 +1,6 @@
 # Inception
 
-This workspace serves as template for creating software proyects.
+Software proyect template based on [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces)
 
 ## Structure
 
