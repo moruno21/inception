@@ -6,7 +6,7 @@ This workspace serves as template for creating software proyects.
 
 - **./**: Contains common configuration such as linting rules, husky and docker.
 
-- **./packages/api**: DDD, CQRS, and Event Sourcing-driven application with NestJS. It's connected to two databases: one for events (EventStore) and another one for views (MongoDB).
+- **./packages/api**: DDD and CQRS application with NestJS. It's connected to a MongoDB database.
 
 - **./packages/web**: React application with Vite. It has styled-components, i18next for translations and react router configured.
 
@@ -16,6 +16,6 @@ This workspace serves as template for creating software proyects.
 
 1. Run `npm i` in the root folder to install all the workspace dependencies.
 
-2. Run `docker-compose up` to create the containers that will host the workspace infrastructure (MongoDB, Mongo Express and EventStore).
+2. Run `docker-compose up` to create the containers that will host the workspace infrastructure (MongoDB and Mongo Express).
 
 3. Run `npm start` to start both the **api** and the **web** applications.

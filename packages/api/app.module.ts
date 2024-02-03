@@ -1,7 +1,3 @@
-import {
-  EVENTSTORE_KEYSTORE_CONNECTION,
-  EventStoreModule,
-} from '@aulasoftwarelibre/nestjs-eventstore'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
@@ -24,13 +20,7 @@ import { AppService } from '~/src/app.service'
       isGlobal: true,
     }),
     ConsoleModule,
-    EventStoreModule.forRoot({
-      connection: process.env.EVENTSTORE_URI || '',
-    }),
     MongooseModule.forRoot(process.env.MONGODB_URI || '', {}),
-    MongooseModule.forRoot(process.env.KEYSTORE_URI || '', {
-      connectionName: EVENTSTORE_KEYSTORE_CONNECTION,
-    }),
   ],
   providers: [AppService],
 })
