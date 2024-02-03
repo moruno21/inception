@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ConsoleModule } from 'nestjs-console'
 
+import { AppController } from '~/app.controller'
+import { AppService } from '~/app.service'
 import LoggerMiddleware from '~/middleware/logger'
-import { AppController } from '~/src/app.controller'
-import { AppService } from '~/src/app.service'
 
 @Module({
   controllers: [AppController],
