@@ -1,14 +1,13 @@
 import Exception from '../models/exception'
 
-const __name__ = 'InvalidId'
+class InvalidId {
+  static causeIsBlank() {
+    return Exception.with('Id cannot be blank')
+  }
 
-const code = 'blank'
-
-type InvalidId = Exception<typeof __name__, typeof code>
-
-const InvalidId = {
-  causeIsBlank: (): InvalidId =>
-    Exception.with({ __name__, code, message: 'Id cannot be blank' }),
-} as const
+  static causeTheFormatIsNotValid(value: string) {
+    return Exception.with(`${value} has not a valid uuid format`)
+  }
+}
 
 export default InvalidId

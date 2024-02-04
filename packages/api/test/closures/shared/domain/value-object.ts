@@ -1,10 +1,7 @@
-import ValueObject from '~/shared/domain/models/value-object'
+import ValueObject, { ValueType } from '~/shared/domain/models/value-object'
 
-import { expectIsNamed } from '../name-type'
-
-export const itIsAValueObject = (value: ValueObject) => {
+export const itIsAValueObject = (value: ValueObject<ValueType>) => {
   it.concurrent('is a value object', () => {
-    expectIsNamed(value)
     expect(value).toHaveProperty('value')
   })
 }

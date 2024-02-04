@@ -1,25 +1,24 @@
-import Either from '~/shared/either'
+import { err, ok, Result } from 'neverthrow'
+
+import UuidLib from '~/shared/uuid'
 
 import InvalidId from '../exceptions/invalid-id'
 import ValueObject from './value-object'
 
-const __name__ = 'Id'
+class Id extends ValueObject<string> {
+  private constructor(value: string) {
+    super(value)
+  }
 
-type Id<Type extends number | string = number | string> = ValueObject<
-  typeof __name__,
-  Type
->
-
-const Id = {
-  fromValue: <Type extends number | string>(
-    value: Type,
-  ): Either<InvalidId, Id<Type>> => {
+  static fromString(value: string): Result<string, InvalidId> {
     const isBlank = !value.toString().trim()
+    if (isBlank) return err(InvalidId.causeIsBlank())
 
-    if (isBlank) return Either.left(InvalidId.causeIsBlank())
+    const isValid = UuidLib.validate(value)
+    if (!isValid) return err(InvalidId.causeTheFormatIsNotValid(value))
 
-    return Either.right({ __name__: 'Id', value })
-  },
-} as const
+    return ok(new this(value).value)
+  }
+}
 
 export default Id

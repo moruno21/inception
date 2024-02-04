@@ -3,62 +3,64 @@ import { itIsAValueObject } from '~/test/closures/shared/domain/value-object'
 import ValueObject from './value-object'
 
 describe('ValueObject', () => {
-  const __name__ = 'ValueObject'
-  const value = 'value'
-  const valueObject = ValueObject.with({ __name__, value })
+  class ValueObjectA extends ValueObject<string> {
+    constructor(value: string) {
+      super(value)
+    }
+  }
 
-  itIsAValueObject(valueObject)
+  const valueA = 'value'
+  const valueObjectA = new ValueObjectA(valueA)
+
+  itIsAValueObject(valueObjectA)
 
   it.concurrent('can be created', () => {
-    expect(valueObject.__name__).toBe(__name__)
-    expect(valueObject.value).toBe(value)
+    expect(valueObjectA.value).toBe(valueA)
   })
 
-  it.concurrent(
-    'checks that different value objects with different values are not equal',
-    () => {
-      expect(
-        ValueObject.equals(
-          { __name__: 'ValueObject', value: 'value' },
-          { __name__: 'DifferentValueObject', value: 'different' },
-        ),
-      ).toBe(false)
-    },
-  )
+  describe('equals', () => {
+    class ValueObjectB extends ValueObject<string> {
+      constructor(value: string) {
+        super(value)
+      }
+    }
 
-  it.concurrent(
-    'checks that different value objects with same values are not equal',
-    () => {
-      expect(
-        ValueObject.equals(
-          { __name__: 'ValueObject', value: 'value' },
-          { __name__: 'DifferentValueObject', value: 'value' },
-        ),
-      ).toBe(false)
-    },
-  )
+    it.concurrent(
+      'checks that different value objects with different values are not equal',
+      () => {
+        const valueB = 'anotherValue'
+        const valueObjectB = new ValueObjectB(valueB)
+        expect(ValueObject.equals(valueObjectA, valueObjectB)).toBe(false)
+      },
+    )
 
-  it.concurrent(
-    'checks that same value objects with different values are not equal',
-    () => {
-      expect(
-        ValueObject.equals(
-          { __name__: 'ValueObject', value: 'value' },
-          { __name__: 'ValueObject', value: 'different' },
-        ),
-      ).toBe(false)
-    },
-  )
+    it.concurrent(
+      'checks that different value objects with same values are not equal',
+      () => {
+        const valueB = 'value'
+        const valueObjectB = new ValueObjectB(valueB)
+        expect(ValueObject.equals(valueObjectA, valueObjectB)).toBe(false)
+      },
+    )
 
-  it.concurrent(
-    'checks that same value objects with same values are equal',
-    () => {
-      expect(
-        ValueObject.equals(
-          { __name__: 'ValueObject', value: 'value' },
-          { __name__: 'ValueObject', value: 'value' },
-        ),
-      ).toBe(true)
-    },
-  )
+    it.concurrent(
+      'checks that same value objects with different values are not equal',
+      () => {
+        const anotherValueA = 'anotherValue'
+        const anotherValueObjectA = new ValueObjectA(anotherValueA)
+        expect(ValueObject.equals(valueObjectA, anotherValueObjectA)).toBe(
+          false,
+        )
+      },
+    )
+
+    it.concurrent(
+      'checks that same value objects with same values are equal',
+      () => {
+        const sameValueA = 'value'
+        const sameValueObjectA = new ValueObjectA(sameValueA)
+        expect(ValueObject.equals(valueObjectA, sameValueObjectA)).toBe(true)
+      },
+    )
+  })
 })

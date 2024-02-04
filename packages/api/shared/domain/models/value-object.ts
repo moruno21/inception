@@ -1,8 +1,4 @@
-import { shallowEqual } from 'shallow-equal-object'
-
-import NameType from '~/shared/name-type'
-
-type ValueType =
+export type ValueType =
   | {
       [key: string]: ValueType
     }
@@ -12,19 +8,12 @@ type ValueType =
   | undefined
   | ValueType[]
 
-type ValueObject<
-  Name extends string = string,
-  Value extends ValueType = ValueType,
-> = NameType<Readonly<{ value: Value }>, Name>
+class ValueObject<T extends ValueType> {
+  constructor(public readonly value: T) {}
 
-const ValueObject = {
-  equals: <Name extends string, Value extends ValueType>(
-    a: ValueObject<Name, Value>,
-    b: ValueObject<Name, Value>,
-  ): boolean => a.__name__ === b.__name__ && shallowEqual(a.value, b.value),
-  with: <Name extends string, Value extends ValueType>(
-    props: ValueObject<Name, Value>,
-  ): ValueObject<Name, Value> => props,
-} as const
+  static equals<U extends ValueType>(a: ValueObject<U>, b: ValueObject<U>) {
+    return a.constructor.name === b.constructor.name && a.value === b.value
+  }
+}
 
 export default ValueObject
