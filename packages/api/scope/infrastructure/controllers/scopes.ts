@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
 } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
@@ -16,7 +17,9 @@ import {
 
 import CreateScope from '~/scope/application/commands/create-scope'
 import CreateScopeHandler from '~/scope/application/commands/handlers/create-scope'
+import GetScope from '~/scope/application/queries/get-scope'
 import GetScopes from '~/scope/application/queries/get-scopes'
+import GetScopeHandler from '~/scope/application/queries/handlers/get-scope'
 import CreateScopeDto from '~/scope/dto/request/create-scope'
 import ScopeDto from '~/scope/dto/response/scope'
 import HttpError from '~/shared/http/error'
@@ -37,6 +40,26 @@ class ScopesController {
   @Get()
   async getScopes(): Promise<ScopeDto[]> {
     return await this.queryBus.execute(GetScopes.all())
+  }
+
+  @ApiOperation({ summary: 'Get a Scope' })
+  @ApiOkResponse({
+    description: 'Scopes',
+    type: ScopeDto,
+  })
+  @Get(':id')
+  async getScope(@Param('id') id: string): Promise<ScopeDto> {
+    const response: Awaited<ReturnType<GetScopeHandler['execute']>> =
+      await this.queryBus.execute(
+        GetScope.with({
+          id,
+        }),
+      )
+
+    if (response.isErr())
+      throw new BadRequestException(HttpError.fromException(response.error))
+
+    return response.value
   }
 
   @ApiOperation({ summary: 'Creates a Scope' })

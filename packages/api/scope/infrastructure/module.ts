@@ -3,6 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs'
 import { MongooseModule, SchemaFactory } from '@nestjs/mongoose'
 
 import CreateScopeHandler from '../application/commands/handlers/create-scope'
+import GetScopeHandler from '../application/queries/handlers/get-scope'
 import GetScopesHandler from '../application/queries/handlers/get-scopes'
 import ScopesController from './controllers/scopes'
 import ScopeSchema from './models/mongoose/schema'
@@ -12,7 +13,7 @@ const controllers = [ScopesController]
 
 const commandHandlers = [CreateScopeHandler]
 
-const queryHandlers = [GetScopesHandler]
+const queryHandlers = [GetScopeHandler, GetScopesHandler]
 
 @Module({
   controllers,
