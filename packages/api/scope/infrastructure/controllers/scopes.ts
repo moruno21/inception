@@ -66,7 +66,7 @@ class ScopesController {
   @ApiCreatedResponse({
     description: 'Scope created',
   })
-  @ApiBadRequestResponse({ description: 'Invalid input', type: HttpError })
+  @ApiBadRequestResponse({ description: 'Invalid input' })
   @Post()
   async createScope(@Body() dto: CreateScopeDto) {
     const response: Awaited<ReturnType<CreateScopeHandler['execute']>> =
