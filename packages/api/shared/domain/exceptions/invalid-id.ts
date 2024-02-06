@@ -1,6 +1,6 @@
 import Exception from '../models/exception'
 
-class InvalidId {
+class InvalidId extends Exception {
   static causeIsBlank() {
     return Exception.with('Id cannot be blank')
   }
