@@ -12,10 +12,8 @@ class MongooseScopes implements Scopes {
     private readonly scopes: Model<ScopeSchema>,
   ) {}
 
-  async create(scope: Scope): Promise<Scope> {
+  async create(scope: Scope): Promise<void> {
     await this.scopes.create(ScopeSchema.fromScope(scope))
-
-    return scope
   }
 }
 

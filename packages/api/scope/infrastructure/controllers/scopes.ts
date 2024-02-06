@@ -1,31 +1,51 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
-import { CommandBus } from '@nestjs/cqrs'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+} from '@nestjs/common'
+import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger'
 
 import CreateScope from '~/scope/application/commands/create-scope'
 import CreateScopeHandler from '~/scope/application/commands/handlers/create-scope'
+import GetScopes from '~/scope/application/queries/get-scopes'
+import CreateScopeDto from '~/scope/dto/request/create-scope'
+import ScopeDto from '~/scope/dto/response/scope'
 import HttpError from '~/shared/http/error'
-
-import ScopeDto from '../models/http/dto'
 
 @ApiTags('Scopes')
 @Controller('scopes')
 class ScopesController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
+
+  @ApiOperation({ summary: 'Gets all Scopes' })
+  @ApiOkResponse({
+    description: 'Scopes',
+    type: [ScopeDto],
+  })
+  @Get()
+  async getScopes(): Promise<ScopeDto[]> {
+    return await this.queryBus.execute(GetScopes.all())
+  }
 
   @ApiOperation({ summary: 'Creates a Scope' })
   @ApiCreatedResponse({
     description: 'Scope created',
-    type: ScopeDto,
   })
-  @ApiBadRequestResponse({ description: 'Invalid input' })
+  @ApiBadRequestResponse({ description: 'Invalid input', type: HttpError })
   @Post()
-  async createScope(@Body() dto: ScopeDto) {
+  async createScope(@Body() dto: CreateScopeDto) {
     const response: Awaited<ReturnType<CreateScopeHandler['execute']>> =
       await this.commandBus.execute(
         CreateScope.with({
@@ -37,8 +57,6 @@ class ScopesController {
 
     if (response.isErr())
       throw new BadRequestException(HttpError.fromException(response.error))
-
-    return ScopeDto.fromScope(response.value)
   }
 }
 

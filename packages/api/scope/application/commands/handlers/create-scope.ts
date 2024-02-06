@@ -18,7 +18,7 @@ class CreateScopeHandler implements ICommandHandler {
 
   async execute(
     command: CreateScope,
-  ): Promise<Result<Scope, InvalidId | InvalidScopeName>> {
+  ): Promise<Result<void, InvalidId | InvalidScopeName>> {
     const scopeId = ScopeId.fromString(command.id)
     if (scopeId.isErr()) return err(scopeId.error)
 
@@ -33,9 +33,7 @@ class CreateScopeHandler implements ICommandHandler {
       name: scopeName.value,
     })
 
-    await this.scopes.create(scope)
-
-    return ok(scope)
+    return ok(await this.scopes.create(scope))
   }
 }
 
