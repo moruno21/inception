@@ -1,5 +1,5 @@
 class Exception extends Error {
-  private constructor(message: string) {
+  protected constructor(message: string) {
     super(message)
   }
 

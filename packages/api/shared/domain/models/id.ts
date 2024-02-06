@@ -6,7 +6,7 @@ import InvalidId from '../exceptions/invalid-id'
 import ValueObject from './value-object'
 
 class Id extends ValueObject<string> {
-  private constructor(value: string) {
+  protected constructor(value: string) {
     super(value)
   }
 
