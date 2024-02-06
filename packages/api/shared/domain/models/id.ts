@@ -10,14 +10,14 @@ class Id extends ValueObject<string> {
     super(value)
   }
 
-  static fromString(value: string): Result<string, InvalidId> {
+  static fromString(value: string): Result<Id, InvalidId> {
     const isBlank = !value.toString().trim()
     if (isBlank) return err(InvalidId.causeIsBlank())
 
     const isValid = UuidLib.validate(value)
     if (!isValid) return err(InvalidId.causeTheFormatIsNotValid(value))
 
-    return ok(new this(value).value)
+    return ok(new this(value))
   }
 }
 
