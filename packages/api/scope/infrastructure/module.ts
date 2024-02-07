@@ -4,6 +4,7 @@ import { MongooseModule, SchemaFactory } from '@nestjs/mongoose'
 
 import CreateScopeHandler from '../application/commands/handlers/create-scope'
 import DeleteScopeHandler from '../application/commands/handlers/delete-scope'
+import EditScopeHandler from '../application/commands/handlers/edit-scope'
 import GetScopeHandler from '../application/queries/handlers/get-scope'
 import GetScopesHandler from '../application/queries/handlers/get-scopes'
 import ScopesController from './controllers/scopes'
@@ -12,7 +13,11 @@ import scopeProviders from './providers'
 
 const controllers = [ScopesController]
 
-const commandHandlers = [CreateScopeHandler, DeleteScopeHandler]
+const commandHandlers = [
+  CreateScopeHandler,
+  DeleteScopeHandler,
+  EditScopeHandler,
+]
 
 const queryHandlers = [GetScopeHandler, GetScopesHandler]
 

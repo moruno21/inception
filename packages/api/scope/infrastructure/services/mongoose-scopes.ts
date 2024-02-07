@@ -20,6 +20,16 @@ class MongooseScopes implements Scopes {
   async delete(id: ScopeId): Promise<void> {
     await this.scopes.deleteOne({ _id: id.value }).lean().exec()
   }
+
+  async edit(scope: Scope): Promise<void> {
+    await this.scopes
+      .updateOne(
+        { _id: scope.id.value },
+        { description: scope.description.value, name: scope.name.value },
+      )
+      .lean()
+      .exec()
+  }
 }
 
 export default MongooseScopes
