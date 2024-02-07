@@ -1,6 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
+import ScopeId from '~/scope/domain/models/id'
 import Scope from '~/scope/domain/models/scope'
 import Scopes from '~/scope/domain/services/scopes'
 
@@ -14,6 +15,10 @@ class MongooseScopes implements Scopes {
 
   async create(scope: Scope): Promise<void> {
     await this.scopes.create(ScopeSchema.fromScope(scope))
+  }
+
+  async delete(id: ScopeId): Promise<void> {
+    await this.scopes.deleteOne({ _id: id.value }).lean().exec()
   }
 }
 

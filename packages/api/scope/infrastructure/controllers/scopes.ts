@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -16,7 +17,9 @@ import {
 } from '@nestjs/swagger'
 
 import CreateScope from '~/scope/application/commands/create-scope'
+import DeleteScope from '~/scope/application/commands/delete-scope'
 import CreateScopeHandler from '~/scope/application/commands/handlers/create-scope'
+import DeleteScopeHandler from '~/scope/application/commands/handlers/delete-scope'
 import GetScope from '~/scope/application/queries/get-scope'
 import GetScopes from '~/scope/application/queries/get-scopes'
 import GetScopeHandler from '~/scope/application/queries/handlers/get-scope'
@@ -77,6 +80,20 @@ class ScopesController {
           name: dto.name,
         }),
       )
+
+    if (response.isErr())
+      throw new BadRequestException(HttpError.fromException(response.error))
+  }
+
+  @ApiOperation({ summary: 'Deletes a Scope' })
+  @ApiOkResponse({
+    description: 'Scope deleted',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid input' })
+  @Delete(':id')
+  async deleteScope(@Param('id') id: string) {
+    const response: Awaited<ReturnType<DeleteScopeHandler['execute']>> =
+      await this.commandBus.execute(DeleteScope.with({ id }))
 
     if (response.isErr())
       throw new BadRequestException(HttpError.fromException(response.error))
