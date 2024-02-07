@@ -6,7 +6,7 @@ Software proyect template based on [npm workspaces](https://docs.npmjs.com/cli/v
 
 - **./**: Contains common configuration such as linting rules, husky and docker.
 
-- **./packages/api**: DDD application with NestJS. It's connected to a MongoDB database.
+- **./packages/api**: DDD and CQRS application with NestJS. It's connected to a MongoDB database.
 
 - **./packages/web**: React application with Vite. It has styled-components, i18next for translations and react router configured.
 
